@@ -5,15 +5,21 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
+    "eslint": "^4.18.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^6.0.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
     "html-webpack-plugin": "webpack-contrib/html-webpack-plugin",
+    "tapable": "1.0.0-beta.5",
     "webpack": "^4.0.0-beta.2",
     "webpack-cli": "^2.0.6",
-    "webpack-dev-server": "3.0.0-beta.1",
-    "tapable": "1.0.0-beta.5"
+    "webpack-dev-server": "3.0.0-beta.1"
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "dev": "webpack --watch --display-error-details",
+    "dev": "webpack --watch",
     "build": "webpack --mode production"
   },
   "repository": "https://github.com/Elitro/mws-restaurant-stage-1.git",

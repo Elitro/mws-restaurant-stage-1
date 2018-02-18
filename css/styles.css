@@ -48,6 +48,10 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   text-align: center;
   text-transform: uppercase;
 }
+
+img, embed, object, video {
+  max-width: 100%;
+}
 /* ====================== Navigation ====================== */
 nav {
   width: 100%;

@@ -2,32 +2,33 @@
 <html>
 
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <!-- Main CSS file -->
   <link rel="stylesheet" href="css/styles.css" type="text/css">
-  <link rel="stylesheet" href="src/css/header.css" type="text/css">
+  <link rel="stylesheet" href="css/restaurant.css" type="text/css">
   <title>Restaurant Info</title>
 </head>
 
 <body class="inside">
   <!-- Beginning header -->
-  <header>
+  <header class="main-header">
     <!-- Beginning nav -->
-    <nav class="title">
-      <h1><a href="/">Restaurant Reviews</a></h1>
+    <nav class="main-nav">
+      <h1 class="main-title"><a href="/">Restaurant Reviews</a></h1>
+      <!-- Beginning breadcrumb -->
+      <ul id="breadcrumb">
+        <li><a href="/">Home</a></li>
+      </ul>
+      <!-- End breadcrumb -->
     </nav>
-    <!-- Beginning breadcrumb -->
-    <ul id="breadcrumb" >
-      <li><a href="/">Home</a></li>
-    </ul>
-    <!-- End breadcrumb -->
     <!-- End nav -->
   </header>
   <!-- End header -->
 
   <!-- Beginning main -->
-  <main id="maincontent">
+  <main id="maincontent" class="maincontent-restaurant">
     <!-- Beginning map -->
     <section id="map-container">
       <div id="map"></div>
@@ -43,8 +44,8 @@
     </section>
     <!-- end restaurant -->
     <!-- Beginning reviews -->
-    <section id="reviews-container">
-      <ul id="reviews-list"></ul>
+    <section id="reviews-container" class="list-container">
+      <ul class="list" id="reviews-list"></ul>
     </section>
     <!-- End reviews -->
   </main>

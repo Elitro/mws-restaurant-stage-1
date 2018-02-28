@@ -9,14 +9,15 @@ module.exports = {
   // ],
   entry: {
     main: [
-      // './src/js/main.js',
-      './src/index.js',
+      // './src/index.js',
+      './src/js/main.js',
       './src/css/styles.scss'
     ],
     restaurantInfo: [
       // './src/js/restaurant_info.js',
       './src/restaurantIndex.js',
-      './src/css/styles.scss'
+      './src/css/styles.scss',
+      './src/css/restaurant.css'
     ]
   },
   output: {

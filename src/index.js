@@ -1,10 +1,25 @@
-import Main from './js/main'
-// import RestaurantInfo from './js/restaurant_info'
+// import Main from './js/main'
 
-// require('./js/dbhelper')
-// require('./js/main.js')
-// require('./js/restaurant_info')
+// class Index {
+//   constructor () {
+//     this.main = new Main()
 
-new Main()
+//     this.setUpdateRestaurants()
+//   }
 
-// new RestaurantInfo()
+//   setUpdateRestaurants () {
+//     console.log('cenas')
+//     document.getElementById('neighborhoods-select').addEventListener('change', this.main.updateRestaurants())
+//   }
+// }
+
+// (() => new Index())()
+
+// // (() => {
+// //   const main = new Main()
+
+// //   //  setUpdateRestaurants () {
+// //   console.log('cenas')
+// //   document.getElementById('neighborhoods-select').addEventListener('change', main.updateRestaurants())
+// // //   }
+// // })()

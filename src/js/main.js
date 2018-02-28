@@ -1,4 +1,5 @@
 import DBHelper from './dbhelper'
+import { initGMaps } from './shared'
 
 class Main {
   constructor () {
@@ -8,17 +9,10 @@ class Main {
     this.markers = []
     this.map = null
 
+    this.setEventListeners()
     this.initMap()
-    this.initGMaps()
+    initGMaps()
     this.loadData()
-  }
-
-  initGMaps () {
-    const script = document.createElement('script')
-    script.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCAW3s5PAqIbjKvYWp5hU9KYxGpyREbZR4&libraries=places&callback=initMap')
-    script.setAttribute('type', 'text/javascript')
-    script.setAttribute('defer', 'defer')
-    document.getElementsByTagName('body')[0].appendChild(script)
   }
 
   /** Initialize Google map, called from HTML. */
@@ -35,6 +29,12 @@ class Main {
       })
       this.updateRestaurants()
     }
+  }
+
+  setEventListeners () {
+    // Set change event for the neighborhoods
+    document.getElementById('neighborhoods-select').addEventListener('change', this.updateRestaurants.bind(this))
+    document.getElementById('cuisines-select').addEventListener('change', this.updateRestaurants.bind(this))
   }
 
   /** Update page and map for current restaurants. */
@@ -179,4 +179,5 @@ class Main {
   }
 }
 
-export default Main
+new Main()
+// export default Main

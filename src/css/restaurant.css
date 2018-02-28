@@ -43,9 +43,34 @@
     padding-bottom: 1pt;
   }
   #reviews-list li {
-    padding: 15px 15px 20px;
     border-radius: 50px 0 50px 0; 
   }
+  /* #reviews-list li p:nth-child(-n+2) {
+    width: 50%;
+    display: inline-block;
+  }
+  #reviews-list li p:nth-child(2) {
+    right: 0;
+  } */
+  
+  /* .review-header { */
+    /* display: flex;
+    justify-content: space-between;
+    background-color: #000000;
+    border-radius: 50px 0 0 0;
+  }
+  .review-header p {
+    margin: 0;
+    padding: 0 15px
+  }
+  .review-header p:first-child {
+    color: #fff;
+    padding-top: 15px;
+  }
+  .review-header p:last-child {
+    color: #f3f3f3;
+    padding-bottom: 15px;
+  } */
   #restaurant-hours td {
     color: #666;
   }

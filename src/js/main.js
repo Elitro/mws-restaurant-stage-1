@@ -1,6 +1,5 @@
 import DBHelper from './dbhelper'
 import { initGMaps, configureImg } from './shared'
-import Combobox from '../components/combobox'
 
 class Main {
   constructor () {
@@ -14,9 +13,6 @@ class Main {
     this.initMap()
     initGMaps()
     this.loadData()
-
-    this.cuisinesCombobox = new Combobox(document.getElementById('cuisines-select'))
-    this.neighborhoodsCombobox = new Combobox(document.getElementById('neighborhoods-select'))
   }
 
   /** Initialize Google map, called from HTML. */
@@ -45,9 +41,6 @@ class Main {
   updateRestaurants () {
     const nSelect = document.getElementById('neighborhoods-select')
     const cSelect = document.getElementById('cuisines-select')
-
-    this.cuisinesCombobox.setData()
-    this.neighborhoodsCombobox.setData()
 
     const cIndex = cSelect.selectedIndex
     const nIndex = nSelect.selectedIndex
@@ -92,7 +85,6 @@ class Main {
       const option = document.createElement('option')
       option.innerHTML = neighborhood
       option.value = neighborhood
-      option.setAttribute('aria-label', neighborhood)
       select.append(option)
     })
   }

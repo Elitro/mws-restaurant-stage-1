@@ -152,6 +152,20 @@ class DBHelper {
     return (`/img/${restaurant.photograph}`)
   }
 
+  /** Restaurant responsive image URL
+   * Hardcoded to simplify things
+   */
+  static responsiveImageUrlForRestaurant (restaurant) {
+    // debugger //eslint-disable-line
+    const parsedImageName = restaurant.photograph.split('.')
+    const srcset = `
+    /img/responsive/${parsedImageName[0]}-small.${parsedImageName[1]} 480w,
+    /img/responsive/${parsedImageName[0]}-medium.${parsedImageName[1]} 640w,
+    ${this.imageUrlForRestaurant(restaurant)} 800w
+    `
+    return srcset
+  }
+
   /**
    * Map marker for a restaurant.
    */

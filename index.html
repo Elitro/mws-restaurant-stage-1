@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,6 +9,9 @@
 </head>
 
 <body>
+  <!-- Skip link for accessibility purposes -->
+  <a href="#restaurants-list" class="skip-link">Skip to main content</a>
+
   <header class="main-header">
     <nav class="main-nav">
       <h1 class="main-title">
@@ -17,27 +20,27 @@
     </nav>
   </header>
 
-  <main id="maincontent" class="maincontent-index">
+  <main id="maincontent" tabindex="-1" class="maincontent-index">
     <section id="map-container">
       <div id="map"></div>
     </section>
     <!-- Show filters -->
-    <section>
-      <div class="filter-options">
-        <h2>Filter Results</h2>
-        <!-- <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()"> -->
-        <select id="neighborhoods-select" name="neighborhoods">
-          <option value="all">All Neighborhoods</option>
-        </select>
-        <!-- <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()"> -->
-        <select id="cuisines-select" name="cuisines">
-          <option value="all">All Cuisines</option>
-        </select>
-      </div>
+    <section class="filter-options">
+        <h2 class="filter-title">Filter Results</h2>
+        <label class="filter-label">
+          <select class="filter-select" id="neighborhoods-select" name="neighborhoods">
+            <option value="all">All Neighborhoods</option>
+          </select>
+        </label>
+        <label class="filter-label">
+          <select class="filter-select" id="cuisines-select" name="cuisines">
+            <option value="all">All Cuisines</option>
+          </select>
+        </label>        
     </section>
     <!-- List all restaurants -->
     <section class="list-container">
-      <ul id="restaurants-list" class="list"></ul>
+      <ul id="restaurants-list" tabindex="-1" class="list"></ul>
     </section>
   </main>
 

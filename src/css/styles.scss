@@ -1,11 +1,12 @@
 @charset "utf-8";
+@import './variables.scss';
 /* CSS Document */
 
 body,td,th,p{
+  font-size: 16px;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 10pt;
 	color: #333;
-	line-height: 1.5;
+	line-height: 1.2em;
 }
 body {
 	background-color: #fdfdfd;
@@ -14,7 +15,6 @@ body {
 }
 ul, li {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 10pt;
 	color: #333;
 }
 a {
@@ -22,7 +22,7 @@ a {
 	text-decoration: none;
 }
 a:hover, a:focus {
-	color: #3397db;
+	color: #207AB6;
 	text-decoration: none;
 }
 a img{
@@ -51,7 +51,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   bottom: 0;
   position: absolute;
   width: 100%;
-  background-color: #444;
+  background-color: #212121;
   color: #aaa;
   font-size: 8pt;
   letter-spacing: 1px;
@@ -138,27 +138,48 @@ nav h1 a {
 /* ====================== Result Filtering ====================== */
 .filter-options {
   width: 100%;
-  background-color: #3397DB;
+  background-color: #207AB6;
   align-items: center;
   display: flex;
   justify-content: center;
+
+  @media screen and (max-width: $bp-1) {
+    height: 90px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: 
+      "title title"
+      "filter filter"
+  }
 }
-.filter-options h2 {
+.filter-title {
   color: white;
   font-size: 1rem;
   font-weight: normal;
   line-height: 1;
   margin: 0 20px;
+  grid-area: title;
+  text-align: center;
+
+  @media screen and (max-width: $bp-1) {
+    font-size: 1.2rem;
+  }
 }
-.filter-options select {
+.filter-label {
+  margin: 10px;
+  width: 150px;
+  justify-self: center;
+}
+.filter-select {
   background-color: white;
   border: 1px solid #fff;
   font-family: Arial,sans-serif;
   font-size: 11pt;
-  height: 35px;
   letter-spacing: 0;
-  margin: 10px;
-  width: 200px;
+  height: 35px;
+  width: inherit;
+  grid-area: filter;
 }
 
 /* ====================== Result Listing ====================== */
@@ -180,7 +201,10 @@ nav h1 a {
 }
 .list li p {
   /* margin: 0 0 10px; */
-  font-size: 11pt;
+  font-size: 1.2em;
+  @media screen and (min-width: $bp-2) {
+    font-size: 1.4em;
+  }
 }
 #restaurants-list .restaurant-img {
   background-color: #ccc;
@@ -190,8 +214,9 @@ nav h1 a {
   min-height: 248px;
   min-width: 100%;
 }
-#restaurants-list li h1 {
-  color: #f18200;
+.restaurants-list-title {
+  // color: #f18200;
+  color: #DC2A2A;
   font-family: Arial,sans-serif;
   font-size: 14pt;
   font-weight: 200;
@@ -200,10 +225,13 @@ nav h1 a {
   margin: 20px 0 10px;
   text-transform: uppercase;
 }
+// #restaurants-list li{
+//   position: relative;
+// }
 #restaurants-list li a {
   background-color: orange;
   border-bottom: 3px solid #eee;
-  color: #fff;
+  color: #000;
   display: inline-block;
   font-size: 10pt;
   margin: 15px 0 0;
@@ -211,8 +239,26 @@ nav h1 a {
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
+  width: 100%;
+  box-sizing: border-box;
+  // position: absolute;
+  // bottom: 0;
 }
 /* ====================== Misc Stylings ====================== */
 .card-border {
   border-radius: 50px 0 50px 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: black;
+  padding: 8px;
+  z-index: 10001;
+}
+
+.skip-link:focus {
+  color: white;
+  top: 0;
 }

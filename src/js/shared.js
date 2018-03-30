@@ -5,3 +5,15 @@ export const initGMaps = () => {
   script.setAttribute('defer', 'defer')
   document.getElementsByTagName('body')[0].appendChild(script)
 }
+
+export const configureImg = (image, restaurant, DBHelper) => {
+  const imageInfo = `Restaurant ${restaurant.name}`
+  image.className = 'restaurant-img'
+  image.src = DBHelper.imageUrlForRestaurant(restaurant)
+  image.srcset = DBHelper.responsiveImageUrlForRestaurant(restaurant)
+  image.sizes = `(max-width: 480px) 320px,
+                  (max-width: 768px) 480px,
+                  50vw`
+  image.alt = imageInfo
+  image.title = imageInfo
+}

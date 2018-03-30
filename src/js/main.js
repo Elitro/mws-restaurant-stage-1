@@ -1,5 +1,6 @@
 import DBHelper from './dbhelper'
-import { initGMaps } from './shared'
+import { initGMaps, configureImg } from './shared'
+import Combobox from '../components/combobox'
 
 class Main {
   constructor () {
@@ -13,6 +14,9 @@ class Main {
     this.initMap()
     initGMaps()
     this.loadData()
+
+    this.cuisinesCombobox = new Combobox(document.getElementById('cuisines-select'))
+    this.neighborhoodsCombobox = new Combobox(document.getElementById('neighborhoods-select'))
   }
 
   /** Initialize Google map, called from HTML. */
@@ -39,8 +43,11 @@ class Main {
 
   /** Update page and map for current restaurants. */
   updateRestaurants () {
-    const cSelect = document.getElementById('cuisines-select')
     const nSelect = document.getElementById('neighborhoods-select')
+    const cSelect = document.getElementById('cuisines-select')
+
+    this.cuisinesCombobox.setData()
+    this.neighborhoodsCombobox.setData()
 
     const cIndex = cSelect.selectedIndex
     const nIndex = nSelect.selectedIndex
@@ -85,6 +92,7 @@ class Main {
       const option = document.createElement('option')
       option.innerHTML = neighborhood
       option.value = neighborhood
+      option.setAttribute('aria-label', neighborhood)
       select.append(option)
     })
   }
@@ -115,7 +123,7 @@ class Main {
 
   /** Clear current restaurants, their HTML and remove their map markers. */
   resetRestaurants (restaurants) {
-  // Remove all restaurants
+    // Remove all restaurants
     this.restaurants = []
     const ul = document.getElementById('restaurants-list')
     ul.innerHTML = ''
@@ -140,11 +148,12 @@ class Main {
     const li = document.createElement('li')
 
     const image = document.createElement('img')
-    image.className = 'restaurant-img'
-    image.src = DBHelper.imageUrlForRestaurant(restaurant)
+    configureImg(image, restaurant, DBHelper)
     li.append(image)
 
-    const name = document.createElement('h1')
+    const name = document.createElement('h2')
+    name.className = 'restaurants-list-title'
+    name.tabIndex = -1
     name.innerHTML = restaurant.name
     li.append(name)
 
@@ -157,7 +166,7 @@ class Main {
     li.append(address)
 
     const more = document.createElement('a')
-    more.innerHTML = 'View Details'
+    more.innerHTML = 'View Details FOR ' + restaurant.name
     more.href = DBHelper.urlForRestaurant(restaurant)
     li.append(more)
 

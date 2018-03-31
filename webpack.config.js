@@ -4,11 +4,9 @@ var path = require('path')
 
 module.exports = {
   mode: 'development',
-  // entry: [
-  //   // './src/index'
-  // ],
   entry: {
     main: [
+      './src/app.js',
       './src/css/styles.scss',
       './src/css/index.scss',
       './src/js/main.js'
@@ -61,7 +59,8 @@ module.exports = {
       {
         from: 'img',
         to: 'img'
-      }
+      },
+      './sw.js'
     ])
   ]
 }

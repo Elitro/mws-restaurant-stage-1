@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Three Stage Course Material Project - Restaurant Reviews",
   "main": "index.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "copy-webpack-plugin": "^4.4.2",
     "css-loader": "^0.28.9",

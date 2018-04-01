@@ -14,7 +14,7 @@ module.exports = {
     restaurantInfo: [
       './src/restaurantIndex.js',
       './src/css/styles.scss',
-      './src/css/restaurant.css'
+      './src/css/restaurant.scss'
     ]
   },
   output: {

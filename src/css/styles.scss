@@ -129,8 +129,8 @@ nav h1 a {
     text-decoration: underline;
 }
 /* ====================== Map ====================== */
-#map {
-  height: 400px;
+.map-container {
+  min-height: 400px;
   width: 100%;
   background-color: #ccc;
 }

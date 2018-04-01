@@ -3,7 +3,9 @@ const staticCacheName = 'restaurant-static-v1'
 self.addEventListener('install', (event) => {
   const urlsToCache = [
     '/',
+    // '/restaurant.html',
     'main.js',
+    // 'retaurantInfo.js',
     'data/restaurants.json',
     'https://fonts.gstatic.com/s/roboto/v18/KFOlCnqEu92Fr1MmEU9fBBc4AMP6lQ.woff2'
   ]
@@ -20,13 +22,11 @@ self.addEventListener('fetch', (event) => {
     caches.match(event.request).then(response => {
       return response || fetch(event.request)
         .then(response => {
-          // if it's a picture, we cache it
-          const imgData = response.clone()
-          if (imgData.url.match(/.*\.jpg/)) {
-            caches.open(staticCacheName).then((cache) => {
-              return cache.put(event.request, imgData)
-            })
-          }
+          // We cache everything we are requesting and haven't cached yet
+          const dataToCache = response.clone()
+          caches.open(staticCacheName).then((cache) => {
+            return cache.put(event.request, dataToCache)
+          })
           return response
         })
     }).catch(error => {

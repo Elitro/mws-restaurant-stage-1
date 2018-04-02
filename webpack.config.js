@@ -12,6 +12,7 @@ module.exports = {
       './src/js/main.js'
     ],
     restaurantInfo: [
+      './src/app.js',
       './src/restaurantIndex.js',
       './src/css/styles.scss',
       './src/css/restaurant.scss'

@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <!-- <link rel="stylesheet" href="css/styles.scss"> -->
+  <meta name="theme-color" content="#fdfdfd"/>
+  <link rel="manifest" href="/manifest.json">
   <title>Restaurant Reviews</title>
 </head>
 
 <body>
+  <!-- Skip link for accessibility purposes -->
+  <a href="#restaurants-list" class="skip-link">Skip to main content</a>
+
   <header class="main-header">
     <nav class="main-nav">
       <h1 class="main-title">
@@ -17,31 +21,28 @@
     </nav>
   </header>
 
-  <main id="maincontent" class="maincontent-index">
-    <section id="map-container">
-      <div id="map"></div>
-    </section>
+  <main id="maincontent" tabindex="-1" class="maincontent-index">
+      <div id="map" class="map-container" role="application"></div>
     <!-- Show filters -->
-    <section>
-      <div class="filter-options">
-        <h2>Filter Results</h2>
-        <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
-          <option value="all">All Neighborhoods</option>
-        </select>
-        <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
-          <option value="all">All Cuisines</option>
-        </select>
-      </div>
+    <section class="filter-options">
+        <h2 class="filter-title">Filter Results</h2>
+        <label class="filter-label">
+          <select class="filter-select" id="neighborhoods-select" name="neighborhoods">
+            <option value="all">All Neighborhoods</option>
+          </select>
+        </label>
+        <label class="filter-label">
+          <select class="filter-select" id="cuisines-select" name="cuisines">
+            <option value="all">All Cuisines</option>
+          </select>
+        </label>        
     </section>
     <!-- List all restaurants -->
     <section class="list-container">
-      <ul id="restaurants-list" class="list"></ul>
+      <ul id="restaurants-list" tabindex="-1" class="list"></ul>
     </section>
   </main>
 
-  <!-- <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
-  <script type="application/javascript" charset="utf-8" src="js/main.js"></script> -->
-  <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAW3s5PAqIbjKvYWp5hU9KYxGpyREbZR4&libraries=places&callback=initMap"></script> -->
 
   <footer id="footer">
     Copyright (c) 2017
@@ -50,6 +51,6 @@
     </a> All Rights Reserved.
   </footer>
 
-<script type="text/javascript" src="dist/main.d33beadbbea5cc48f2bb.js"></script></body>
+<script type="text/javascript" src="main.js"></script></body>
 
 </html>

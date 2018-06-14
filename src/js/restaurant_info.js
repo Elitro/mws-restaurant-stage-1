@@ -13,10 +13,8 @@ class RestaurantInfo {
   /** Initialize Google map, called from HTML. */
   initMap () {
     window.initMap = () => {
-      this.fetchRestaurantFromURL((error, restaurant) => {
-        if (error) { // Got an error!
-          console.error(error)
-        } else {
+      this.fetchRestaurantFromURL()
+        .then((restaurant) => {
           this.map = new google.maps.Map(document.getElementById('map'), {
             zoom: 16,
             center: restaurant.latlng,
@@ -24,31 +22,27 @@ class RestaurantInfo {
           })
           this.fillBreadcrumb(this.restaurant)
           DBHelper.mapMarkerForRestaurant(this.restaurant, this.map)
-        }
-      })
+        })
+        .catch(error => console.error(error))
     }
   }
 
   /** Get current restaurant from page URL. */
-  fetchRestaurantFromURL (callback) {
+  fetchRestaurantFromURL (restaurant) {
     if (this.restaurant) { // restaurant already fetched!
-      callback(null, this.restaurant)
-      return
+      // return this.restaurant
+      return new Promise((resolve) => resolve(this.restaurant))
     }
     const id = this.getParameterByName('id')
     if (!id) { // no id found in URL
-      let error = 'No restaurant id in URL'
-      callback(error, null)
+      return new Promise((resolve, reject) => reject(new Error('No restaurant id in URL')))
     } else {
-      DBHelper.fetchRestaurantById(id, (error, restaurant) => {
-        this.restaurant = restaurant
-        if (!restaurant) {
-          console.error(error)
-          return
-        }
-        this.fillRestaurantHTML(restaurant)
-        callback(null, restaurant)
-      })
+      return DBHelper.fetchRestaurantById(id)
+        .then(restaurant => {
+          this.restaurant = restaurant
+          this.fillRestaurantHTML(restaurant)
+          return restaurant
+        })
     }
   }
 

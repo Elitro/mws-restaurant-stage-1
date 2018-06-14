@@ -54,14 +54,11 @@ module.exports = {
     // Copy static assets
     new CopyWebpackPlugin([
       {
-        from: 'data',
-        to: 'data'
-      },
-      {
         from: 'img',
         to: 'img'
       },
-      './sw.js'
+      './sw.js',
+      'manifest.json'
     ])
   ]
 }

@@ -48,14 +48,12 @@ class Main {
     const cuisine = cSelect[cIndex].value
     const neighborhood = nSelect[nIndex].value
 
-    DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
-      if (error) { // Got an error!
-        console.error(error)
-      } else {
+    DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood)
+      .then(restaurants => {
         this.resetRestaurants(restaurants)
         this.fillRestaurantsHTML(this.restaurants)
-      }
-    })
+      })
+      .catch(error => console.error(error))
   }
 
   /** Fetch neighborhoods and cuisines as soon as the page is loaded. */
@@ -137,11 +135,14 @@ class Main {
 
   /** Create restaurant HTML. */
   createRestaurantHTML (restaurant) {
+    // debugger //eslint-disable-line
     const li = document.createElement('li')
 
-    const image = document.createElement('img')
-    configureImg(image, restaurant, DBHelper)
-    li.append(image)
+    if (restaurant.photograph) {
+      const image = document.createElement('img')
+      configureImg(image, restaurant, DBHelper)
+      li.append(image)
+    }
 
     const name = document.createElement('h2')
     name.className = 'restaurants-list-title'

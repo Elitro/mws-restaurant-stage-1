@@ -17,3 +17,13 @@ export const configureImg = (image, restaurant, DBHelper) => {
   image.alt = imageInfo
   image.title = imageInfo
 }
+
+export const toggleButton = ({className, innerHTML, clickHandler, isToggled}) => {
+  const button = document.createElement('button')
+  button.className = className
+  button.innerHTML = innerHTML
+  button.addEventListener('click', clickHandler)
+  button.setAttribute('aria-pressed', isToggled)
+
+  return button
+}

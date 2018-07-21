@@ -225,9 +225,20 @@ nav h1 a {
   margin: 20px 0 10px;
   text-transform: uppercase;
 }
-// #restaurants-list li{
-//   position: relative;
-// }
+.favorite {
+  border: none;
+  font-size: 2em;
+  opacity: 0.3;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.favorite.enabled {
+  opacity: 1;
+}
 #restaurants-list li a {
   background-color: orange;
   border-bottom: 3px solid #eee;

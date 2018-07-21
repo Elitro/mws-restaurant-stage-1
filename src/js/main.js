@@ -1,5 +1,6 @@
 import DBHelper from './dbhelper'
-import { initGMaps, configureImg } from './shared'
+import { initGMaps, configureImg, toggleButton } from './shared'
+import { addToFavorites } from './requests'
 
 class Main {
   constructor () {
@@ -157,6 +158,16 @@ class Main {
     const address = document.createElement('p')
     address.innerHTML = restaurant.address
     li.append(address)
+
+    const favorite = toggleButton({
+      isToggled: restaurant.is_favorite,
+      className: `favorite ${restaurant.is_favorite ? 'enabled' : ''}`,
+      innerHTML: '⭐',
+      clickHandler: () => addToFavorites(restaurant.id, restaurant.is_favorite)
+    })
+    li.append(favorite)
+
+    console.log(restaurant)
 
     const more = document.createElement('a')
     more.innerHTML = 'View Details FOR ' + restaurant.name

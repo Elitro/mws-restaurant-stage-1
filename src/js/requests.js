@@ -47,10 +47,15 @@ const editReview = ({name, rating, comments, reviewId}) => {
   })
 }
 
-// const getReview
+const getRestaurantReview = (restaurantId) => {
+  const url = `${ENDPOINT}reviews/?restaurant_id=${restaurantId}`
+  return fetch(url)
+    .then(reviews => reviews.json())
+}
 
 export {
   addToFavorites,
   addReview,
-  editReview
+  editReview,
+  getRestaurantReview
 }

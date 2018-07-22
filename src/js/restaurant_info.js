@@ -1,6 +1,7 @@
 import DBHelper from './dbhelper'
 import { initGMaps, configureImg } from './shared'
 import review from '../components/review/review'
+import { getRestaurantReview } from './requests'
 
 class RestaurantInfo {
   constructor () {
@@ -66,7 +67,12 @@ class RestaurantInfo {
       this.fillRestaurantHoursHTML(restaurant.operating_hours)
     }
     // fill reviews
-    this.fillReviewsHTML(restaurant.reviews)
+    // this.fillReviewsHTML(restaurant.reviews)
+    getRestaurantReview(restaurant.id)
+      .then(reviews => {
+        this.fillReviewsHTML(reviews)
+      })
+      .catch(error => console.log('Error fetching reviews for restaurant', restaurant.id, error))
 
     // Add review form
     const newReview = review(restaurant.id)
@@ -122,7 +128,8 @@ class RestaurantInfo {
     li.appendChild(name)
 
     const date = document.createElement('p')
-    date.innerHTML = review.date
+    const parsedDate = new Date(review.createdAt)
+    date.innerHTML = `${parsedDate.getDay()}/${parsedDate.getMonth()}/${parsedDate.getFullYear()}`
     li.appendChild(date)
 
     const rating = document.createElement('p')

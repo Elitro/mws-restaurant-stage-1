@@ -1,5 +1,5 @@
 const PORT = 1337
-const ENDPOINT = `http://localhost:${PORT}/restaurants/`
+const ENDPOINT = `http://localhost:${PORT}/`
 
 /**
  * REST method to favorite a restaurant
@@ -8,15 +8,49 @@ const ENDPOINT = `http://localhost:${PORT}/restaurants/`
  *
  */
 const addToFavorites = (restaurantId, isFavorite) => {
-  const url = `${ENDPOINT}${restaurantId}/?is_favorite=${!isFavorite}`
+  const url = `${ENDPOINT}restaurants/${restaurantId}/?is_favorite=${isFavorite === 'false'}`
   return fetch(url, {
-    method: 'POST',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json; charset=utf-8'
     }
   })
 }
 
+const addReview = (reviewBody) => {
+  const url = `${ENDPOINT}reviews`
+
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8'
+    },
+    body: JSON.stringify(reviewBody)
+  })
+}
+
+const editReview = ({name, rating, comments, reviewId}) => {
+  const url = `${ENDPOINT}reviews/${reviewId}`
+
+  const reviewBody = {
+    name,
+    rating,
+    comments
+  }
+
+  return fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8'
+    },
+    body: JSON.stringify(reviewBody)
+  })
+}
+
+// const getReview
+
 export {
-  addToFavorites
+  addToFavorites,
+  addReview,
+  editReview
 }

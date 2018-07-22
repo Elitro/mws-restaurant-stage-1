@@ -1,0 +1,8 @@
+.review-rating {
+    display: flex;
+    width: 100%;
+
+    :nth-child(n+2) {
+        margin-left: 10px;
+    }
+}

@@ -15,7 +15,11 @@ module.exports = {
       './src/app.js',
       './src/restaurantIndex.js',
       './src/css/styles.scss',
-      './src/css/restaurant.scss'
+      './src/css/restaurant.scss',
+      './src/components/review/review.js',
+      './src/components/review/review.scss',
+      './src/components/review-rating/review-rating.js',
+      './src/components/review-rating/review-rating.scss'
     ]
   },
   output: {

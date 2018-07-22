@@ -1,5 +1,6 @@
 import DBHelper from './dbhelper'
 import { initGMaps, configureImg } from './shared'
+import review from '../components/review/review'
 
 class RestaurantInfo {
   constructor () {
@@ -66,6 +67,12 @@ class RestaurantInfo {
     }
     // fill reviews
     this.fillReviewsHTML(restaurant.reviews)
+
+    // Add review form
+    const newReview = review(restaurant.id)
+    // debugger//eslint-disable-line
+    const currentReview = document.getElementById('review-form')
+    currentReview.parentNode.replaceChild(newReview, currentReview)
   }
 
   /** Create restaurant operating hours HTML table and add it to the webpage. */
@@ -90,6 +97,7 @@ class RestaurantInfo {
   fillReviewsHTML (reviews) {
     const container = document.getElementById('reviews-container')
     const title = document.createElement('h3')
+    title.className = 'review-h3'
     title.innerHTML = 'Reviews'
     container.appendChild(title)
 

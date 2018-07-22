@@ -24,6 +24,7 @@ export const toggleButton = ({className, innerHTML, clickHandler, isToggled}) =>
   button.innerHTML = innerHTML
   button.addEventListener('click', clickHandler)
   button.setAttribute('aria-pressed', isToggled)
+  button.setAttribute('aria-label', 'Set as favorite')
 
   return button
 }

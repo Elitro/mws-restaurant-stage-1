@@ -9,7 +9,6 @@ class Main {
     this.cuisines = null
     this.markers = []
     this.map = null
-    this.favoriteButtons = []
 
     this.setEventListeners()
     this.initMap()
@@ -165,17 +164,15 @@ class Main {
       className: `favorite ${restaurant.is_favorite ? 'enabled' : ''}`,
       innerHTML: '⭐',
       clickHandler: () => {
-        addToFavorites(restaurant.id, restaurant.is_favorite).then(() => {
+        addToFavorites(restaurant.id, favorite.getAttribute('aria-pressed')).then(() => {
           // When the promise resolves and the button is now favorite the enabled class toggles
           favorite.classList.toggle('enabled')
+          favorite.setAttribute('aria-pressed', favorite.classList.contains('enabled'))
         }).catch(error => console.log('Error storing favorite', error))
       }
     })
 
-    // Store the buttons so we can update them after the POST
-    this.favoriteButtons.push(favorite)
-
-    li.append(this.favoriteButtons[this.favoriteButtons.length - 1])
+    li.append(favorite)
 
     console.log(restaurant)
 

@@ -252,9 +252,34 @@ nav h1 a {
   text-transform: uppercase;
   width: 100%;
   box-sizing: border-box;
-  // position: absolute;
-  // bottom: 0;
 }
+
+/* ====================== Buttons ====================== */
+
+@mixin button() {
+  border-radius: 10px;
+  color: white;
+  display: block;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+// Color palette shamelessly stolen from bootstrap
+.review-button {
+  background-color: #28a745;
+  @include button();
+
+  &:hover, &:active{
+      border-color: #218838;
+  }
+}
+
+.remove-button {
+  @include button();
+  background-color: #dc3545;
+
+}
+
 /* ====================== Misc Stylings ====================== */
 .card-border {
   border-radius: 50px 0 50px 0;

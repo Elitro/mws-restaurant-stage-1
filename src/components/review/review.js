@@ -4,7 +4,7 @@ import reviewRating from '../review-rating/review-rating'
 /**
  * Restaurant Review Component
  */
-const review = (restaurantId) => {
+const review = (restaurantId, addReviewHandler) => {
   const review = document.createElement('section')
   review.className = 'add-review-container'
 
@@ -23,6 +23,7 @@ const review = (restaurantId) => {
   const reviewNameLabel = document.createElement('label')
   reviewNameLabel.setAttribute('for', reviewNameId)
   reviewNameLabel.innerHTML = 'Name'
+  reviewNameLabel.className = 'review-label'
 
   review.appendChild(reviewNameLabel)
   review.appendChild(reviewName)
@@ -48,15 +49,16 @@ const review = (restaurantId) => {
   const addReviewButton = document.createElement('button')
   addReviewButton.className = 'review-button'
   addReviewButton.innerHTML = 'Post Review'
-  addReviewButton.addEventListener('click', () => addReview({
-    'restaurant_id': restaurantId,
-    name: reviewName.value,
-    rating: reviewRatingElement.getAttribute('data-selection') || 0,
-    comments: reviewComments.value
-  }).then(() => {
-    // DEFER TODO: After adding the review the button switches to edit
-  }).catch(error => console.log('Error when adding the review', error))
-  )
+
+  addReviewButton.addEventListener('click', () => {
+    const reviewJson = {
+      'restaurant_id': restaurantId,
+      name: reviewName.value,
+      rating: reviewRatingElement.getAttribute('data-selection') || 0,
+      comments: reviewComments.value
+    }
+    addNewReviewHandler(reviewJson, addReviewHandler)
+  })
   review.appendChild(addReviewButton)
 
   // DEFER TODO: Add the edit review functionality
@@ -67,6 +69,16 @@ const review = (restaurantId) => {
   // addEditButton.addEventListener('click', clickHandler)
 
   return review
+}
+
+const addNewReviewHandler = (reviewJson, addReviewHandler) => {
+  // debugger//eslint-disable-line
+  addReview(reviewJson)
+    .then(() => {
+      addReviewHandler(reviewJson)
+    // DEFER TODO: After adding the review the button switches to edit
+    })
+    .catch(error => console.log('Error when adding the review', error))
 }
 
 export default review

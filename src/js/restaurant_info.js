@@ -1,7 +1,7 @@
 import DBHelper from './dbhelper'
 import { initGMaps, configureImg } from './shared'
 import review from '../components/review/review'
-import { getRestaurantReview } from './requests'
+import { getRestaurantReview, removeReview } from './requests'
 
 class RestaurantInfo {
   constructor () {
@@ -67,16 +67,18 @@ class RestaurantInfo {
       this.fillRestaurantHoursHTML(restaurant.operating_hours)
     }
     // fill reviews
-    // this.fillReviewsHTML(restaurant.reviews)
     getRestaurantReview(restaurant.id)
       .then(reviews => {
         this.fillReviewsHTML(reviews)
       })
       .catch(error => console.log('Error fetching reviews for restaurant', restaurant.id, error))
 
+    const appendNewReview = (customReview) => {
+      document.getElementById('reviews-list').appendChild(this.createReviewHTML(customReview))
+    }
+
     // Add review form
-    const newReview = review(restaurant.id)
-    // debugger//eslint-disable-line
+    const newReview = review(restaurant.id, appendNewReview)
     const currentReview = document.getElementById('review-form')
     currentReview.parentNode.replaceChild(newReview, currentReview)
   }
@@ -127,10 +129,12 @@ class RestaurantInfo {
     name.innerHTML = review.name
     li.appendChild(name)
 
-    const date = document.createElement('p')
-    const parsedDate = new Date(review.createdAt)
-    date.innerHTML = `${parsedDate.getDay()}/${parsedDate.getMonth()}/${parsedDate.getFullYear()}`
-    li.appendChild(date)
+    if (review.createdAt) {
+      const date = document.createElement('p')
+      const parsedDate = new Date(review.createdAt)
+      date.innerHTML = `${parsedDate.getDay()}/${parsedDate.getMonth()}/${parsedDate.getFullYear()}`
+      li.appendChild(date)
+    }
 
     const rating = document.createElement('p')
     rating.innerHTML = `Rating: ${review.rating}`
@@ -139,6 +143,15 @@ class RestaurantInfo {
     const comments = document.createElement('p')
     comments.innerHTML = review.comments
     li.appendChild(comments)
+
+    const removeButton = document.createElement('button')
+    removeButton.innerHTML = 'Remove'
+    removeButton.className = 'remove-button'
+    removeButton.addEventListener('click', (e) => {
+      e.stopPropagation()
+      removeReview(review.id).then(() => li.remove())
+    })
+    li.appendChild(removeButton)
 
     return li
   }

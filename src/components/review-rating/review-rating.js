@@ -16,6 +16,7 @@ const reviewRating = () => {
   const reviewRatingLabel = document.createElement('label')
   reviewRatingLabel.setAttribute('for', reviewRatingId)
   reviewRatingLabel.innerHTML = 'Select your rating'
+  reviewRatingLabel.className = 'review-label'
   reviewRating.appendChild(reviewRatingLabel)
 
   // Radio Group

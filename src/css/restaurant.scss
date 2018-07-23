@@ -8,7 +8,8 @@
     grid-column-gap: 10px;
     grid-template-areas: 
       "restaurant map"
-      "reviews reviews";
+      "reviews reviews"
+      "form form";
 
     .restaurant-container {
       grid-area: restaurant;
@@ -17,6 +18,10 @@
     .map-container {
       height: 100%;
       grid-area: map;
+    }
+
+    .add-review-container {
+      grid-area: form;
     }
   }
  } 

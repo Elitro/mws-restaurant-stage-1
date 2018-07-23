@@ -47,6 +47,17 @@ const editReview = ({name, rating, comments, reviewId}) => {
   })
 }
 
+const removeReview = (id) => {
+  const url = `${ENDPOINT}reviews/${id}`
+
+  return fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8'
+    }
+  })
+}
+
 const getRestaurantReview = (restaurantId) => {
   const url = `${ENDPOINT}reviews/?restaurant_id=${restaurantId}`
   return fetch(url)
@@ -57,5 +68,6 @@ export {
   addToFavorites,
   addReview,
   editReview,
-  getRestaurantReview
+  getRestaurantReview,
+  removeReview
 }

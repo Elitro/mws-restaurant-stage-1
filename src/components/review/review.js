@@ -78,7 +78,7 @@ const addNewReviewHandler = (reviewJson, addReviewHandler) => {
       addReviewHandler(reviewJson)
     // DEFER TODO: After adding the review the button switches to edit
     })
-    .catch(error => console.log('Error when adding the review', error))
+    // .catch(error => console.log('Error when adding the review', error))
 }
 
 export default review

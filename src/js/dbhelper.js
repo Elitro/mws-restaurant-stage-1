@@ -39,8 +39,7 @@ class DBHelper {
       })
   }
 
-  /** Fetch a restaurant by its ID.
-   */
+  /** Fetch a restaurant by its ID. */
   static fetchRestaurantById (id) {
     return IDB.getRestaurantById(id)
       .then(restaurant => {

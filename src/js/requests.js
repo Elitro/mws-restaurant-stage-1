@@ -1,3 +1,5 @@
+import IDB from './idb'
+
 const PORT = 1337
 const ENDPOINT = `http://localhost:${PORT}/`
 
@@ -27,6 +29,11 @@ const addReview = (reviewBody) => {
     },
     body: JSON.stringify(reviewBody)
   })
+    .catch(() => {
+      // If it fails, add the review to the cache
+
+      console.log('Error when adding the review, adding it to the cache')
+    })
 }
 
 const editReview = ({name, rating, comments, reviewId}) => {
@@ -60,8 +67,19 @@ const removeReview = (id) => {
 
 const getRestaurantReview = (restaurantId) => {
   const url = `${ENDPOINT}reviews/?restaurant_id=${restaurantId}`
+
   return fetch(url)
-    .then(reviews => reviews.json())
+  /** First we check the network, and store the reviews */
+    .then(reviews => {
+      const dataPromise = reviews.json()
+      IDB.storeReviews(dataPromise)
+      return dataPromise
+    })
+    /** If the network fails we check IDB */
+    .catch(() => {
+      console.log('Failed to get reviews! lets get them from IDB')
+      return IDB.getReviewByRestaurantId(restaurantId)
+    })
 }
 
 export {

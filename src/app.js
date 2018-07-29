@@ -6,3 +6,8 @@ if (navigator.serviceWorker) {
     console.log('Failed to register the SW', error)
   })
 }
+
+// // Request a sync
+// navigator.serviceWorker.ready.then((swRegistration) => {
+//   return swRegistration.sync.register('IDBSync')
+// })

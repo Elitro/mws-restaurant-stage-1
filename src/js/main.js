@@ -174,8 +174,6 @@ class Main {
 
     li.append(favorite)
 
-    console.log(restaurant)
-
     const more = document.createElement('a')
     more.innerHTML = 'View Details FOR ' + restaurant.name
     more.href = DBHelper.urlForRestaurant(restaurant)

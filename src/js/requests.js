@@ -28,12 +28,10 @@ const addReview = (reviewBody) => {
       'Content-Type': 'application/json; charset=utf-8'
     },
     body: JSON.stringify(reviewBody)
+  }).catch(() => {
+    console.log('Error when adding the review, adding it to IDB')
+    IDB.storeReviewInPending(reviewBody)
   })
-    .catch(() => {
-      // If it fails, add the review to the cache
-
-      console.log('Error when adding the review, adding it to the cache')
-    })
 }
 
 const editReview = ({name, rating, comments, reviewId}) => {

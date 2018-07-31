@@ -1,4 +1,6 @@
 // source: https://developers.google.com/web/fundamentals/primers/service-workers/
+import {addReview} from './src/js/requests'
+import IDB from './src/js/idb'
 
 const staticCacheName = 'restaurant-static-v1'
 
@@ -89,46 +91,26 @@ self.addEventListener('fetch', (event) => {
           }
           return response
         })
-        .catch(() => {
-          return new Response('Offline!')
-        })
     })
   )
 })
 
-// self.addEventListener('fetch', (event) => {
-//   event.respondWith(
-//     // We first execute the request
-//     fetch(event.request).then(response => {
-//       const dataToCache = response.clone()
-//       // We cache everything we are requesting and haven't cached yet
-//       if (response.type === 'basic' || event.request.url.indexOf('https://maps.googleapis.com/maps/api/js') === 0) {
-//         caches.open(staticCacheName).then((cache) => {
-//           return cache.put(event.request, dataToCache)
-//         })
-//       }
-//       return response
-//     })
-//     // If we go offline
-//       .catch(() => {
-//         // Look for a match
-//         caches.match(event.request)
-//           .then(response => {
-//             if (response) {
-//               console.log('return response')
-//               return response
-//             }
-//             // var fetchRequest = event.request.clone()
-//           })
-
-//         // return new Response('Offline!')
-//       })
-//   )
-// })
-
+// Inspiration here: https://www.twilio.com/blog/2017/02/send-messages-when-youre-back-online-with-service-workers-and-background-sync.html
 // When the app requests a sync, check if there are some reviews that need to be posted
-// self.addEventListener('sync', (event) => {
-//   if (event.tag === 'IDBSync') {
-//     // event.waitUntil(doSomeStuff())
-//   }
-// })
+self.addEventListener('sync', (event) => {
+  console.log('sync!', event)
+  event.waitUntil(
+    IDB.pendingStore('readonly').then(pendingStore => pendingStore.getAll()) // retrieve all stored pending reviews
+      .then(pendingReviews => {
+        // Iterating through all the reviews to send them over to the server
+        return Promise.all(pendingReviews.map(pReview => {
+          return addReview(pReview).then(response => response.json())
+            .then(data => {
+              if (data.result === 'success') {
+                return IDB.pendingStore('readwrite').then(pendingStore => pendingStore.delete(pReview.id))
+              }
+            })
+        })).catch(err => console.log('failed to execute sync', err))
+      })
+  )
+})

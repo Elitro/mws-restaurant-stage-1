@@ -7,6 +7,9 @@ class IDB {
   static get REVIEW_STORE () {
     return 'reviews'
   }
+  static get PENDING_STORE () {
+    return 'pending'
+  }
   static get IDB_NAME () {
     return 'restaurant-db'
   }
@@ -15,7 +18,7 @@ class IDB {
 
   static dbPromise () {
     return idb.open(this.IDB_NAME, 1, (upgradeDb) => {
-      const cenas = upgradeDb.createObjectStore(this.RESTAURANT_STORE, {
+      const db = upgradeDb.createObjectStore(this.RESTAURANT_STORE, {
         keyPath: 'id'
       })
       upgradeDb.createObjectStore(this.REVIEW_STORE, {
@@ -25,7 +28,9 @@ class IDB {
       const reviewStore = upgradeDb.transaction.objectStore(this.REVIEW_STORE)
       reviewStore.createIndex('restaurantId', 'restaurant_id')
 
-      return cenas
+      upgradeDb.createObjectStore(this.PENDING_STORE, { autoIncrement: true, keyPath: 'id' })
+
+      return db
     })
   }
 
@@ -103,6 +108,32 @@ class IDB {
       const reviewStore = tx.objectStore(this.REVIEW_STORE)
       const restaurantIdIndex = reviewStore.index('restaurantId')
       return restaurantIdIndex.getAll(parseInt(restaurantId))
+    })
+  }
+
+  static storeReview (review) {
+    this.dbPromise().then(db => {
+      const tx = db.transaction(this.REVIEW_STORE, 'readwrite')
+      const reviewStore = tx.objectStore(this.REVIEW_STORE)
+      reviewStore.put(review).then(() => console.log('Review stored successfully'))
+      // Completed transaction
+      return tx.complete
+    })
+  }
+
+  static storeReviewInPending (review) {
+    this.dbPromise().then(db => {
+      const tx = db.transaction(this.PENDING_STORE, 'readwrite')
+      const pendingStore = tx.objectStore(this.PENDING_STORE)
+      pendingStore.put(review).then(() => console.log('PENDING Review stored successfully'))
+      // Completed transaction
+      return tx.complete
+    })
+  }
+
+  static pendingStore (mode) {
+    return this.dbPromise().then(db => {
+      return db.transaction(this.PENDING_STORE, mode).objectStore(this.PENDING_STORE)
     })
   }
 }

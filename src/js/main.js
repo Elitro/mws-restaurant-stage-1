@@ -160,9 +160,10 @@ class Main {
     li.append(address)
 
     const favorite = toggleButton({
-      isToggled: restaurant.is_favorite,
-      className: `favorite ${restaurant.is_favorite ? 'enabled' : ''}`,
-      innerHTML: '⭐',
+      isToggled: restaurant.is_favorite === 'true',
+      className: `favorite${restaurant.is_favorite === 'true' ? ' enabled' : ''}`,
+      // innerHTML: '⭐',
+      innerHTML: 'Add to favorites',
       clickHandler: () => {
         addToFavorites(restaurant.id, favorite.getAttribute('aria-pressed')).then(() => {
           // When the promise resolves and the button is now favorite the enabled class toggles

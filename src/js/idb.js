@@ -122,7 +122,7 @@ class IDB {
   }
 
   static storeReviewInPending (review) {
-    this.dbPromise().then(db => {
+    return this.dbPromise().then(db => {
       const tx = db.transaction(this.PENDING_STORE, 'readwrite')
       const pendingStore = tx.objectStore(this.PENDING_STORE)
       pendingStore.put(review).then(() => console.log('PENDING Review stored successfully'))

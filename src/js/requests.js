@@ -30,7 +30,11 @@ const addReview = (reviewBody) => {
     body: JSON.stringify(reviewBody)
   }).catch(() => {
     console.log('Error when adding the review, adding it to IDB')
-    IDB.storeReviewInPending(reviewBody)
+    IDB.storeReviewInPending(reviewBody).then(() => {
+      navigator.serviceWorker.ready.then(function (swRegistration) {
+        return swRegistration.sync.register('Do the Sync!')
+      })
+    })
   })
 }
 

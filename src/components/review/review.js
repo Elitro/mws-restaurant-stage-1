@@ -1,6 +1,5 @@
 import {addReview} from '../../js/requests'
 import reviewRating from '../review-rating/review-rating'
-import IDB from '../../js/idb'
 
 /**
  * Restaurant Review Component

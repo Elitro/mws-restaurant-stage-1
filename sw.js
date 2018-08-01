@@ -1,6 +1,7 @@
 // source: https://developers.google.com/web/fundamentals/primers/service-workers/
-import {addReview} from './src/js/requests'
-import IDB from './src/js/idb'
+// import IDB from './src/js/idb'
+// self.importScripts('/src/js/idb.js', './src/js/requests')
+// import * as requests from './src/js/requests'
 
 const staticCacheName = 'restaurant-static-v1'
 
@@ -82,7 +83,6 @@ self.addEventListener('fetch', (event) => {
       return fetch(fetchRequest)
         .then(response => {
           const dataToCache = response.clone()
-          // console.log('Requesting from the network', response)
           // We cache everything we are requesting and haven't cached yet
           if (response.type === 'basic' || event.request.url.indexOf('https://maps.googleapis.com/maps/api/js') === 0) {
             caches.open(staticCacheName).then((cache) => {
@@ -97,20 +97,26 @@ self.addEventListener('fetch', (event) => {
 
 // Inspiration here: https://www.twilio.com/blog/2017/02/send-messages-when-youre-back-online-with-service-workers-and-background-sync.html
 // When the app requests a sync, check if there are some reviews that need to be posted
-self.addEventListener('sync', (event) => {
-  console.log('sync!', event)
-  event.waitUntil(
-    IDB.pendingStore('readonly').then(pendingStore => pendingStore.getAll()) // retrieve all stored pending reviews
-      .then(pendingReviews => {
-        // Iterating through all the reviews to send them over to the server
-        return Promise.all(pendingReviews.map(pReview => {
-          return addReview(pReview).then(response => response.json())
-            .then(data => {
-              if (data.result === 'success') {
-                return IDB.pendingStore('readwrite').then(pendingStore => pendingStore.delete(pReview.id))
-              }
-            })
-        })).catch(err => console.log('failed to execute sync', err))
-      })
-  )
-})
+// self.addEventListener('sync', (event) => {
+//   console.log('sync!', event)
+//   event.waitUntil(
+//     IDB.pendingStore('readonly').then(pendingStore => pendingStore.getAll()) // retrieve all stored pending reviews
+//       .then(pendingReviews => {
+//         // Iterating through all the reviews to send them over to the server
+//         return Promise.all(pendingReviews.map(pReview => {
+//           return fetch('http://localhost:1337/reviews', {
+//             method: 'POST',
+//             headers: {
+//               'Content-Type': 'application/json; charset=utf-8'
+//             },
+//             body: JSON.stringify(pReview)
+//           }).then(response => response.json())
+//             .then(data => {
+//               if (data.result === 'success') {
+//                 return IDB.pendingStore('readwrite').then(pendingStore => pendingStore.delete(pReview.id))
+//               }
+//             })
+//         })).catch(err => console.log('failed to execute sync', err))
+//       })
+//   )
+// })

@@ -16,26 +16,21 @@ class DBHelper {
   /** Fetch all restaurants.
    */
   static fetchRestaurants () {
-    // Check if restaurants exist in IDB
-    return IDB.getAllRestaurants()
-      .then(restaurants => {
-        // If there is nothing stored in IDB
-        if (!restaurants || restaurants.length < 1) {
-          return fetch('http://localhost:1337/restaurants')
-            .then(response => {
-              if (response.status !== 200) {
-                console.log('Error fetching restaurants')
-                return
-              }
-              const dataPromise = response.json()
-              // Store restaurants
-              IDB.storeRestaurants(dataPromise)
-              return dataPromise
-            })
-            .catch(e => console.log('error: ', e))
+    // First we check the server
+    return fetch('http://localhost:1337/restaurants')
+      .then(response => {
+        if (response.status !== 200) {
+          console.log('Error fetching restaurants')
+          return
         }
-        // Otherwise retrieve the restaurants from the IDB
-        return restaurants
+        const dataPromise = response.json()
+        // Store restaurants
+        IDB.storeRestaurants(dataPromise)
+        return dataPromise
+      })
+      // If the server is offline we check IDB
+      .catch(() => {
+        return IDB.getAllRestaurants()
       })
   }
 

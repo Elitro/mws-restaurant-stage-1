@@ -53,6 +53,7 @@ class Main {
       .then(restaurants => {
         this.resetRestaurants(restaurants)
         this.fillRestaurantsHTML(this.restaurants)
+        this.setLazyLoadImagesObservable()
       })
       .catch(error => console.error(error))
   }
@@ -195,8 +196,39 @@ class Main {
       })
       this.markers.push(marker)
     })
+
+    google.maps.event.addListenerOnce(this.map, 'tilesloaded', function () {
+      // When the map is loaded add the alt tag
+      const soundIconImage = document.getElementById('VadagonVolumeStatus')
+      soundIconImage.getElementsByTagName('img')[0].setAttribute('alt', 'Sound controller') // Apparently gmaps adds an img without alt tag
+    })
+  }
+
+  /**
+   * Make images lazily loaded
+   * Source: https://developers.google.com/web/fundamentals/performance/lazy-loading-guidance/images-and-video/
+  */
+  setLazyLoadImagesObservable () {
+    var lazyImages = [].slice.call(document.querySelectorAll('img.lazy'))
+
+    if ('IntersectionObserver' in window) {
+      let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            let lazyImage = entry.target
+            lazyImage.srcset = lazyImage.dataset.srcset
+            lazyImage.removeAttribute('data-srcset')
+            lazyImage.classList.remove('lazy')
+            lazyImageObserver.unobserve(lazyImage)
+          }
+        })
+      })
+
+      lazyImages.forEach(function (lazyImage) {
+        lazyImageObserver.observe(lazyImage)
+      })
+    }
   }
 }
 
 new Main()
-// export default Main

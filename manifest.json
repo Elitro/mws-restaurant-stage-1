@@ -3,18 +3,18 @@
     "name": "Restaurant Reviews",
     "icons": [
       {
-        "src": "/img/pwa/1-very-small.jpg",
-        "type": "image/jpg",
+        "src": "/img/pwa/1-very-small.webp",
+        "type": "image/webp",
         "sizes": "192x192"
       },
       {
-        "src": "/img/pwa/1-small.jpg",
-        "type": "image/jpg",
+        "src": "/img/pwa/1-small.webp",
+        "type": "image/webp",
         "sizes": "512x512"
       },
       {
-        "src": "/img/1.jpg",
-        "type": "image/jpg",
+        "src": "/img/1.webp",
+        "type": "image/webp",
         "sizes": "800x600"
       }
     ],

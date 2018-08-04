@@ -1,6 +1,7 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 var path = require('path')
+const CompressionPlugin = require('compression-webpack-plugin')
 
 module.exports = {
   mode: 'development',
@@ -63,6 +64,9 @@ module.exports = {
       },
       './sw.js',
       'manifest.json'
-    ])
+    ]),
+    new CompressionPlugin({
+      test: /\.js/
+    })
   ]
 }

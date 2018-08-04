@@ -117,14 +117,14 @@ class DBHelper {
   /** Restaurant image URL.
    */
   static imageUrlForRestaurant (restaurant) {
-    return (`/img/${restaurant.photograph}.jpg`)
+    return (`/img/${restaurant.photograph}.webp`)
   }
 
   /** Restaurant responsive image URL
    * Hardcoded to simplify things
    */
   static responsiveImageUrlForRestaurant (restaurant) {
-    const extension = 'jpg'
+    const extension = 'webp'
     // const parsedImageName = restaurant.photograph.split('.')
     const srcset = `
     /img/responsive/${restaurant.photograph}-small.${extension}} 480w,

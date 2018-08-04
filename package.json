@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
+    "compression-webpack-plugin": "^1.1.11",
     "copy-webpack-plugin": "^4.4.2",
     "css-loader": "^0.28.9",
     "eslint": "^4.18.0",

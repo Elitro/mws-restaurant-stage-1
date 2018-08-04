@@ -226,9 +226,9 @@ nav h1 a {
   text-transform: uppercase;
 }
 .favorite {
-  border: none;
+  border: 2px solid #527AC2;
   font-size: 2em;
-  opacity: 0.3;
+  // opacity: 0.3;
   cursor: pointer;
 
   &:hover {
@@ -237,7 +237,8 @@ nav h1 a {
 }
 
 .favorite.enabled {
-  opacity: 1;
+  color: #ffffff;
+  background-color: #527AC2;
 }
 #restaurants-list li a {
   background-color: orange;

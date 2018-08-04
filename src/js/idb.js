@@ -36,7 +36,6 @@ class IDB {
 
   static storeRestaurants (dataPromise) {
     this.storeObjects(dataPromise, this.RESTAURANT_STORE).then(() => {
-      console.log('Added all restaurants successfully')
     })
       .catch((error) => {
         console.log('Failed to save the restaurants into IDB', error)
@@ -65,19 +64,10 @@ class IDB {
   /** Retrieves a restaurant from IDB through its id */
   static getRestaurantById (id) {
     return this.dbPromise().then(db => {
-      // debugger//eslint-disable-line
-
       const tx = db.transaction(this.RESTAURANT_STORE)
       const restaurantStore = tx.objectStore(this.RESTAURANT_STORE)
-      // return restaurantStore.get(id)
       return restaurantStore.get(parseInt(id))
     })
-    // .then(val => {
-    //   console.log('Getting restaurant from IDB:', val)
-    // })
-    // .catch(() => {
-    //   console.log(`No restaurant with the id ${id}`)
-    // })
   }
 
   static getAllRestaurants () {
@@ -128,12 +118,6 @@ class IDB {
       pendingStore.put(review).then(() => console.log('PENDING Review stored successfully'))
       // Completed transaction
       return tx.complete
-    })
-  }
-
-  static pendingStore (mode) {
-    return this.dbPromise().then(db => {
-      return db.transaction(this.PENDING_STORE, mode).objectStore(this.PENDING_STORE)
     })
   }
 }

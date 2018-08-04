@@ -8,9 +8,11 @@ export const initGMaps = () => {
 
 export const configureImg = (image, restaurant, DBHelper) => {
   const imageInfo = `Restaurant ${restaurant.name}`
-  image.className = 'restaurant-img'
-  image.src = DBHelper.imageUrlForRestaurant(restaurant)
-  image.srcset = DBHelper.responsiveImageUrlForRestaurant(restaurant)
+  image.className = 'restaurant-img lazy'
+  // image.src = DBHelper.imageUrlForRestaurant(restaurant)
+  // image.setAttribute('data-src', DBHelper.imageUrlForRestaurant(restaurant))
+  // image.srcset = DBHelper.responsiveImageUrlForRestaurant(restaurant)
+  image.setAttribute('data-srcset', DBHelper.responsiveImageUrlForRestaurant(restaurant))
   image.sizes = `(max-width: 480px) 320px,
                   (max-width: 768px) 480px,
                   50vw`

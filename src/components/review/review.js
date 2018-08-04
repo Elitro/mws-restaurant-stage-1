@@ -57,13 +57,18 @@ const review = (restaurantId, addReviewHandler) => {
       rating: reviewRatingElement.getAttribute('data-selection') || 0,
       comments: reviewComments.value
     }
+
+    // DEFER TODO: Check if there are pending reviews first instead of always syncing
+    // When posting another review, check if there are reviews to sync
+    navigator.serviceWorker.ready.then(function (swRegistration) {
+      return swRegistration.sync.register('sync-reviews')
+    })
+
     addReview(reviewJson)
       .then((message) => {
         addReviewHandler(reviewJson) // append new review to the html
         // DEFER TODO: After adding the review the button switches to edit
       })
-
-    // addNewReviewHandler(reviewJson, addReviewHandler)
   })
   review.appendChild(addReviewButton)
 

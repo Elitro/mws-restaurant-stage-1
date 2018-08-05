@@ -127,25 +127,11 @@ class DBHelper {
     const extension = 'webp'
     // const parsedImageName = restaurant.photograph.split('.')
     const srcset = `
-    /img/responsive/${restaurant.photograph}-small.${extension}} 480w,
-    /img/responsive/${restaurant.photograph}-medium.${extension}} 640w,
+    /img/responsive/${restaurant.photograph}-small.${extension} 480w,
+    /img/responsive/${restaurant.photograph}-medium.${extension} 640w,
     ${this.imageUrlForRestaurant(restaurant)} 800w
     `
     return srcset
-  }
-
-  /**
-   * Map marker for a restaurant.
-   */
-  static mapMarkerForRestaurant (restaurant, map) {
-    const marker = new google.maps.Marker({
-      position: restaurant.latlng,
-      title: restaurant.name,
-      url: DBHelper.urlForRestaurant(restaurant),
-      map: map,
-      animation: google.maps.Animation.DROP}
-    )
-    return marker
   }
 }
 

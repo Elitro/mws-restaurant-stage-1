@@ -9,9 +9,6 @@ export const initGMaps = () => {
 export const configureImg = (image, restaurant, DBHelper) => {
   const imageInfo = `Restaurant ${restaurant.name}`
   image.className = 'restaurant-img lazy'
-  // image.src = DBHelper.imageUrlForRestaurant(restaurant)
-  // image.setAttribute('data-src', DBHelper.imageUrlForRestaurant(restaurant))
-  // image.srcset = DBHelper.responsiveImageUrlForRestaurant(restaurant)
   image.setAttribute('data-srcset', DBHelper.responsiveImageUrlForRestaurant(restaurant))
   image.sizes = `(max-width: 480px) 320px,
                   (max-width: 768px) 480px,
@@ -29,4 +26,30 @@ export const toggleButton = ({className, innerHTML, clickHandler, isToggled}) =>
   button.setAttribute('aria-label', 'Set as favorite')
 
   return button
+}
+
+/**
+   * Make images lazily loaded
+   * Source: https://developers.google.com/web/fundamentals/performance/lazy-loading-guidance/images-and-video/
+  */
+export const setLazyLoadImagesObservable = () => {
+  var lazyImages = [].slice.call(document.querySelectorAll('img.lazy'))
+
+  if ('IntersectionObserver' in window) {
+    let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.srcset = lazyImage.dataset.srcset
+          lazyImage.removeAttribute('data-srcset')
+          lazyImage.classList.remove('lazy')
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      })
+    })
+
+    lazyImages.forEach(function (lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  }
 }

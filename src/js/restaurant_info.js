@@ -1,5 +1,5 @@
 import DBHelper from './dbhelper'
-import { initGMaps, configureImg } from './shared'
+import { setLazyLoadImagesObservable, configureImg } from './shared'
 import review from '../components/review/review'
 import { getRestaurantReview, removeReview } from './requests'
 
@@ -9,24 +9,25 @@ class RestaurantInfo {
     this.map = null
 
     this.initMap()
-    initGMaps()
   }
 
   /** Initialize Google map, called from HTML. */
   initMap () {
-    window.initMap = () => {
-      this.fetchRestaurantFromURL()
-        .then((restaurant) => {
-          this.map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 16,
-            center: restaurant.latlng,
-            scrollwheel: false
-          })
-          this.fillBreadcrumb(this.restaurant)
-          DBHelper.mapMarkerForRestaurant(this.restaurant, this.map)
-        })
-        .catch(error => console.error(error))
+    const mapElement = document.getElementById('map')
+    const mapDimensions = {
+      width: 300,
+      height: 400
     }
+    const zoom = 16
+    this.fetchRestaurantFromURL().then(restaurant => {
+      setLazyLoadImagesObservable()
+      this.fillBreadcrumb(this.restaurant)
+      let url = `https://maps.googleapis.com/maps/api/staticmap?center=${restaurant.latlng.lat},${restaurant.latlng.lng}&zoom=12&scrollwheel=false&size=${mapDimensions.width}x${mapDimensions.height}&key=AIzaSyAlwebaE-fR1VJu8Inj60pUibFRpuQ7xqc&zoom=${zoom}`
+      url += `&markers=color:red|label:S|${restaurant.latlng.lat},${restaurant.latlng.lng}`
+      mapElement.src = url
+      // const soundIconImage = document.getElementById('VadagonVolumeStatus')
+      // soundIconImage.getElementsByTagName('img')[0].setAttribute('alt', 'Sound controller') // Apparently gmaps adds an img without alt tag
+    })
   }
 
   /** Get current restaurant from page URL. */

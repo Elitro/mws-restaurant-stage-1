@@ -63,6 +63,7 @@ module.exports = {
         to: 'img'
       },
       './sw.js',
+      './idblib.js',
       'manifest.json'
     ]),
     new CompressionPlugin({

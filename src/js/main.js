@@ -1,5 +1,5 @@
 import DBHelper from './dbhelper'
-import { initGMaps, configureImg, toggleButton } from './shared'
+import { configureImg, toggleButton, setLazyLoadImagesObservable } from './shared'
 import { addToFavorites } from './requests'
 
 class Main {
@@ -12,24 +12,25 @@ class Main {
 
     this.setEventListeners()
     this.initMap()
-    initGMaps()
+
     this.loadData()
   }
 
   /** Initialize Google map, called from HTML. */
   initMap () {
-    window.initMap = () => {
-      let loc = {
-        lat: 40.722216,
-        lng: -73.987501
-      }
-      this.map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 12,
-        center: loc,
-        scrollwheel: false
-      })
-      this.updateRestaurants()
+    const mapElement = document.getElementById('map')
+    const mapDimensions = {
+      width: 400,
+      height: 400
     }
+    let loc = {
+      lat: 40.722216,
+      lng: -73.987501
+    }
+    const url = `https://maps.googleapis.com/maps/api/staticmap?center=${loc.lat},${loc.lng}&zoom=12&scrollwheel=false&size=${mapDimensions.width}x${mapDimensions.height}&key=AIzaSyAlwebaE-fR1VJu8Inj60pUibFRpuQ7xqc`
+
+    mapElement.src = url
+    this.updateRestaurants()
   }
 
   setEventListeners () {
@@ -53,7 +54,7 @@ class Main {
       .then(restaurants => {
         this.resetRestaurants(restaurants)
         this.fillRestaurantsHTML(this.restaurants)
-        this.setLazyLoadImagesObservable()
+        setLazyLoadImagesObservable()
       })
       .catch(error => console.error(error))
   }
@@ -188,46 +189,12 @@ class Main {
  * Add markers for current restaurants to the map.
  */
   addMarkersToMap (restaurants) {
+    let markers = '&markers=color:red|label:S'
     restaurants.forEach(restaurant => {
+      markers += `|${restaurant.latlng.lat},${restaurant.latlng.lng}`
+    })
     // Add marker to the map
-      const marker = DBHelper.mapMarkerForRestaurant(restaurant, this.map)
-      google.maps.event.addListener(marker, 'click', () => {
-        window.location.href = marker.url
-      })
-      this.markers.push(marker)
-    })
-
-    google.maps.event.addListenerOnce(this.map, 'tilesloaded', function () {
-      // When the map is loaded add the alt tag
-      const soundIconImage = document.getElementById('VadagonVolumeStatus')
-      soundIconImage.getElementsByTagName('img')[0].setAttribute('alt', 'Sound controller') // Apparently gmaps adds an img without alt tag
-    })
-  }
-
-  /**
-   * Make images lazily loaded
-   * Source: https://developers.google.com/web/fundamentals/performance/lazy-loading-guidance/images-and-video/
-  */
-  setLazyLoadImagesObservable () {
-    var lazyImages = [].slice.call(document.querySelectorAll('img.lazy'))
-
-    if ('IntersectionObserver' in window) {
-      let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            let lazyImage = entry.target
-            lazyImage.srcset = lazyImage.dataset.srcset
-            lazyImage.removeAttribute('data-srcset')
-            lazyImage.classList.remove('lazy')
-            lazyImageObserver.unobserve(lazyImage)
-          }
-        })
-      })
-
-      lazyImages.forEach(function (lazyImage) {
-        lazyImageObserver.observe(lazyImage)
-      })
-    }
+    document.getElementById('map').src += markers
   }
 }
 

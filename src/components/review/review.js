@@ -35,7 +35,8 @@ const review = (restaurantId, addReviewHandler) => {
   // Comments
   const reviewCommentsId = 'review-comments'
   const reviewCommentsLabel = document.createElement('label')
-  reviewNameLabel.setAttribute('for', reviewCommentsId)
+  reviewCommentsLabel.innerHTML = 'Write your review'
+  reviewCommentsLabel.setAttribute('for', reviewCommentsId)
 
   const reviewComments = document.createElement('textarea')
   reviewComments.id = reviewCommentsId

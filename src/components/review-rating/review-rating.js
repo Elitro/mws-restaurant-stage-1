@@ -22,7 +22,7 @@ const reviewRating = () => {
   // Radio Group
   const reviewRatingGroup = document.createElement('div')
   reviewRatingGroup.setAttribute('role', 'radiogroup')
-  reviewRatingGroup.setAttribute('aria-labelledby', 'Rate the restaurant')
+  reviewRatingGroup.setAttribute('aria-label', 'Rate the restaurant')
 
   // Radio Options
   for (let index = 1; index <= 5; index++) {

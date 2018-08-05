@@ -78,15 +78,24 @@ nav > a, button {
   width: 100%;
   z-index: 1000;
   opacity: 0.95;
+  display: flex;
+  height: 70px;
 }
 
 .main-nav {
   background-color: #252831;
   text-align:center;
+  flex-grow: 1;
+  display: flex;
 }
+
+#toggle-maps {
+  background-color: #fff;
+}
+
 .main-title {
   margin: auto;
-  padding: 20px 0;
+  // padding: 20px 0;
 }
 nav h1 a {
   color: #fff;
@@ -119,7 +128,7 @@ nav h1 a {
 
 /* Add a color to all links inside the list */
 #breadcrumb li a {
-    color: #0275d8;
+    color:  #1F3A93;
     text-decoration: none;
 }
 
@@ -267,11 +276,11 @@ nav h1 a {
 
 // Color palette shamelessly stolen from bootstrap
 .review-button {
-  background-color: #28a745;
+  background-color: #1D781D;
   @include button();
 
   &:hover, &:active{
-      border-color: #218838;
+      border-color: #28A228;
   }
 }
 

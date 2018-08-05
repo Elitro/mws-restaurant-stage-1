@@ -1,5 +1,5 @@
 // source: https://developers.google.com/web/fundamentals/primers/service-workers/
-importScripts('/src/js/idblib.js')
+importScripts('idblib.js')
 
 const staticCacheName = 'restaurant-static-v1'
 
@@ -39,7 +39,8 @@ self.addEventListener('install', (event) => {
     'img/responsive/7-medium.webp',
     'img/responsive/8-medium.webp',
     'img/responsive/9-medium.webp',
-    'img/responsive/10-medium.webp'
+    'img/responsive/10-medium.webp',
+    'img/gmaps-icon.png'
   ]
 
   event.waitUntil(

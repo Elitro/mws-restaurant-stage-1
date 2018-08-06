@@ -31,6 +31,11 @@ const addReview = (reviewBody) => {
   }).catch(() => {
     console.log('Error when adding the review, adding it to IDB')
     IDB.storeReviewInPending(reviewBody)
+    // DEFER TODO: Check if there are pending reviews first instead of always syncing
+    // Since the review post failed, request a sync event
+    navigator.serviceWorker.ready.then(function (swRegistration) {
+      return swRegistration.sync.register('sync-reviews')
+    })
   })
 }
 

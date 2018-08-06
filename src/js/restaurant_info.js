@@ -9,6 +9,7 @@ class RestaurantInfo {
     this.map = null
 
     this.initMap()
+    // this.syncReviews()
   }
 
   /** Initialize Google map, called from HTML. */
@@ -25,8 +26,6 @@ class RestaurantInfo {
       let url = `https://maps.googleapis.com/maps/api/staticmap?center=${restaurant.latlng.lat},${restaurant.latlng.lng}&zoom=12&scrollwheel=false&size=${mapDimensions.width}x${mapDimensions.height}&key=AIzaSyAlwebaE-fR1VJu8Inj60pUibFRpuQ7xqc&zoom=${zoom}`
       url += `&markers=color:red|label:S|${restaurant.latlng.lat},${restaurant.latlng.lng}`
       mapElement.src = url
-      // const soundIconImage = document.getElementById('VadagonVolumeStatus')
-      // soundIconImage.getElementsByTagName('img')[0].setAttribute('alt', 'Sound controller') // Apparently gmaps adds an img without alt tag
     })
   }
 
@@ -175,6 +174,12 @@ class RestaurantInfo {
     if (!results[2]) { return '' }
     return decodeURIComponent(results[2].replace(/\+/g, ' '))
   }
+
+  // syncReviews () {
+  //   navigator.serviceWorker.ready.then(function (swRegistration) {
+  //     return swRegistration.sync.register('sync-reviews')
+  //   })
+  // }
 }
 
 export default RestaurantInfo

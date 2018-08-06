@@ -6,8 +6,3 @@ if (navigator.serviceWorker) {
     console.log('Failed to register the SW', error)
   })
 }
-
-// navigator.serviceWorker.ready.then(function (swRegistration) {
-//   console.log('sync registered')
-//   return swRegistration.sync.register('sync-reviews')
-// })

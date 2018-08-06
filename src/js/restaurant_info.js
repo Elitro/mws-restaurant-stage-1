@@ -174,12 +174,6 @@ class RestaurantInfo {
     if (!results[2]) { return '' }
     return decodeURIComponent(results[2].replace(/\+/g, ' '))
   }
-
-  // syncReviews () {
-  //   navigator.serviceWorker.ready.then(function (swRegistration) {
-  //     return swRegistration.sync.register('sync-reviews')
-  //   })
-  // }
 }
 
 export default RestaurantInfo

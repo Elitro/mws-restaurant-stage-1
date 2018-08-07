@@ -119,12 +119,12 @@ self.addEventListener('sync', (event) => {
                 })
             })
         }))
-      }).catch(err => {
-        console.log('failed to execute sync', err)
-        return err
       })
+      // .catch(err => {
+      //   console.log('failed to execute sync', err)
+      //   return Promise.reject(new Error('Throwing error, will resync eventually...'))
+      // })
   )
-  // }
 })
 
 const store = {

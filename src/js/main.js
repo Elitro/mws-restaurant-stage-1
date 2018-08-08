@@ -1,6 +1,7 @@
 import DBHelper from './dbhelper'
-import { configureImg, toggleButton, setLazyLoadImagesObservable } from './shared'
+import { configureImg, toggleButton, setLazyLoadImagesObservable, toggleSyncMessage } from './shared'
 import { addToFavorites } from './requests'
+import IDB from './idb'
 
 class Main {
   constructor () {
@@ -14,6 +15,11 @@ class Main {
     this.initMap()
 
     this.loadData()
+
+    // Sync Favorites
+    navigator.serviceWorker.ready.then(function (swRegistration) {
+      return swRegistration.sync.register('sync-favs')
+    })
   }
 
   /** Initialize Google map, called from HTML. */
@@ -138,7 +144,6 @@ class Main {
 
   /** Create restaurant HTML. */
   createRestaurantHTML (restaurant) {
-    // debugger //eslint-disable-line
     const li = document.createElement('li')
 
     if (restaurant.photograph) {
@@ -171,7 +176,20 @@ class Main {
           // When the promise resolves and the button is now favorite the enabled class toggles
           favorite.classList.toggle('enabled')
           favorite.setAttribute('aria-pressed', favorite.classList.contains('enabled'))
-        }).catch(error => console.log('Error storing favorite', error))
+        }).catch(() => {
+          console.log('Error storing favorite, saving it to IDB')
+          favorite.classList.toggle('enabled')
+          favorite.setAttribute('aria-pressed', favorite.classList.contains('enabled'))
+          // Storing this action for offline sync
+          IDB.storeFavoritesInPending(
+            {restaurantId: restaurant.id, isFavorite: restaurant.is_favorite === 'false'}
+          ).then(() => {
+            toggleSyncMessage()
+            navigator.serviceWorker.ready.then(function (swRegistration) {
+              return swRegistration.sync.register('sync-reviews')
+            })
+          })
+        })
       }
     })
 

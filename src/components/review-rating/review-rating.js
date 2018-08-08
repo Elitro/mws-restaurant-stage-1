@@ -46,7 +46,6 @@ const reviewRating = () => {
 }
 
 const setSelectedValue = (value, reviewRating) => {
-  // debugger//eslint-disable-line
   reviewRating.setAttribute('data-selection', value)
 }
 

@@ -308,3 +308,19 @@ nav h1 a {
   color: white;
   top: 0;
 }
+
+.sync-message {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #252831;
+  text-align: center;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  height: 0px;
+  // display: hidden;
+  p {
+    color: #fff
+  }
+}

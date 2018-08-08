@@ -71,7 +71,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     // First it checks if the request is in the cache
-    caches.match(event.request).then(response => {
+    caches.match(event.request, {ignoreSearch: true}).then(response => {
       if (response) {
         // console.log('return response', response)
         return response
@@ -97,34 +97,73 @@ self.addEventListener('fetch', (event) => {
 // Inspiration here: https://www.twilio.com/blog/2017/02/send-messages-when-youre-back-online-with-service-workers-and-background-sync.html
 // When the app requests a sync, check if there are some reviews that need to be posted
 self.addEventListener('sync', (event) => {
-  // if (event.tag === 'sync-reviews') {
   console.log('sync!')
-  event.waitUntil(
-    store.pendingStore('readonly').then(pendingStore => pendingStore.getAll()) // retrieve all stored pending reviews
-      .then(pendingReviews => {
-        console.log('There are', pendingReviews.length, 'reviews to sync')
-        // Iterating through all the reviews to send them over to the server
-        return Promise.all(pendingReviews.map(pReview => {
-          return fetch('http://localhost:1337/reviews', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json; charset=utf-8'
-            },
-            body: JSON.stringify(pReview)
-          })
-            .then(data => {
-              return store.pendingStore('readwrite')
-                .then(pendingStore => {
-                  return pendingStore.delete(pReview.id)
+  if (event.tag === 'sync-reviews') {
+    event.waitUntil(
+    // Sync Reviews
+      store.pendingStore('readonly').then(pendingStore => pendingStore.getAll()) // retrieve all stored pending reviews
+        .then(pendingReviews => {
+          console.log('pendingReviews', pendingReviews)
+          if (pendingReviews.length > 0) {
+            console.log('There are', pendingReviews.length, 'reviews to sync')
+            // Iterating through all the reviews to send them over to the server
+            return Promise.all(pendingReviews.map(pReview => {
+              return fetch('http://localhost:1337/reviews', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json; charset=utf-8'
+                },
+                body: JSON.stringify(pReview)
+              })
+                .then(data => {
+                  return store.pendingStore('readwrite')
+                    .then(pendingStore => {
+                      return pendingStore.delete(pReview.id)
+                    })
                 })
-            })
-        }))
-      })
-      // .catch(err => {
-      //   console.log('failed to execute sync', err)
-      //   return Promise.reject(new Error('Throwing error, will resync eventually...'))
-      // })
-  )
+            }))
+              .then(() => {
+                self.clients.matchAll().then((clients) => {
+                  clients.forEach((client) => client.postMessage('reload-window'))
+                })
+              })
+          }
+        })
+    )
+  }
+  // Sync Favorites
+  if (event.tag === 'sync-favs') {
+    event.waitUntil(
+      store.pendingFavorites('readonly').then(pendingStore => pendingStore.getAll()) // retrieve all stored pending reviews
+        .then(pendingFavorites => {
+          console.log('pendingFavorites', pendingFavorites)
+          if (pendingFavorites.length > 0) {
+            console.log('There are', pendingFavorites.length, 'favorites to sync')
+            // Iterating through all the favorites to send them over to the server
+            return Promise.all(pendingFavorites.map(pFav => {
+              return fetch(`http://localhost:1337/restaurants/${pFav.restaurantId}/?is_favorite=${pFav.isFavorite}`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json; charset=utf-8'
+                }
+              })
+                .then(data => {
+                  console.log('favs synced')
+                  return store.pendingFavorites('readwrite')
+                    .then(pendingStore => {
+                      return pendingStore.delete(pFav.id)
+                    })
+                })
+            }))
+              .then(() => {
+                self.clients.matchAll().then((clients) => {
+                  clients.forEach((client) => client.postMessage('reload-window'))
+                })
+              })
+          }
+        })
+    )
+  }
 })
 
 const store = {
@@ -137,6 +176,12 @@ const store = {
   pendingStore: (mode) => {
     return store.dbPromise().then(db => {
       return db.transaction('pending', mode).objectStore('pending')
+    })
+  },
+
+  pendingFavorites: (mode) => {
+    return store.dbPromise().then(db => {
+      return db.transaction('favorite', mode).objectStore('favorite')
     })
   }
 }

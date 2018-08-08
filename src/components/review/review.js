@@ -1,6 +1,7 @@
 import {addReview} from '../../js/requests'
 import reviewRating from '../review-rating/review-rating'
 import IDB from '../../js/idb'
+import {toggleSyncMessage} from '../../js/shared'
 
 /**
  * Restaurant Review Component
@@ -66,11 +67,13 @@ const review = (restaurantId, addReviewHandler) => {
         // DEFER TODO: After adding the review the button switches to edit
       }).catch(() => {
         console.log('Error when adding the review, adding it to IDB')
-        IDB.storeReviewInPending(reviewJson)
-        // DEFER TODO: Check if there are pending reviews first instead of always syncing
-        // Since the review post failed, request a sync event
-        navigator.serviceWorker.ready.then(function (swRegistration) {
-          return swRegistration.sync.register('sync-reviews')
+        IDB.storeReviewInPending(reviewJson).then(() => {
+          toggleSyncMessage()
+          // DEFER TODO: Check if there are pending reviews first instead of always syncing
+          // Since the review post failed, request a sync event
+          navigator.serviceWorker.ready.then(function (swRegistration) {
+            return swRegistration.sync.register('sync-reviews')
+          })
         })
       })
   })

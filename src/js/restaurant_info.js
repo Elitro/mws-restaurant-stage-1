@@ -9,7 +9,11 @@ class RestaurantInfo {
     this.map = null
 
     this.initMap()
-    // this.syncReviews()
+
+    // Sync Reviews
+    navigator.serviceWorker.ready.then(function (swRegistration) {
+      return swRegistration.sync.register('sync-reviews')
+    })
   }
 
   /** Initialize Google map, called from HTML. */

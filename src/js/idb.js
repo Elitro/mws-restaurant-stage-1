@@ -10,6 +10,9 @@ class IDB {
   static get PENDING_STORE () {
     return 'pending'
   }
+  static get FAVORITE_STORE () {
+    return 'favorite'
+  }
   static get IDB_NAME () {
     return 'restaurant-db'
   }
@@ -28,7 +31,10 @@ class IDB {
       const reviewStore = upgradeDb.transaction.objectStore(this.REVIEW_STORE)
       reviewStore.createIndex('restaurantId', 'restaurant_id')
 
+      // Pending reviews store
       upgradeDb.createObjectStore(this.PENDING_STORE, { autoIncrement: true, keyPath: 'id' })
+      // Pending favorites store
+      upgradeDb.createObjectStore(this.FAVORITE_STORE, { autoIncrement: true, keyPath: 'id' })
 
       return db
     })
@@ -116,6 +122,16 @@ class IDB {
       const tx = db.transaction(this.PENDING_STORE, 'readwrite')
       const pendingStore = tx.objectStore(this.PENDING_STORE)
       pendingStore.put(review).then(() => console.log('PENDING Review stored successfully'))
+      // Completed transaction
+      return tx.complete
+    })
+  }
+
+  static storeFavoritesInPending (favorite) {
+    return this.dbPromise().then(db => {
+      const tx = db.transaction(this.FAVORITE_STORE, 'readwrite')
+      const pendingStore = tx.objectStore(this.FAVORITE_STORE)
+      pendingStore.put(favorite).then(() => console.log('Pending Favorite stored successfully'))
       // Completed transaction
       return tx.complete
     })
